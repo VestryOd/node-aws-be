@@ -10,7 +10,13 @@ const checkUuid = (id) => {
   ));
 };
 
+const checkPostParams = (data) => {
+  const { title, description, price, count } = data;
+  return !title || !description || !price || !count || Number.isNaN(price) || Number.isNaN(count)
+};
+
 export {
   dbOptions,
-  checkUuid
+  checkUuid,
+  checkPostParams
 };
