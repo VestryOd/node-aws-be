@@ -1,0 +1,66 @@
+export default [
+  {
+    id: '1a529519-fced-453b-9b04-0d81b9902843',
+    title: 'Where the Crawdads Sing',
+    description: 'Literary, Coming of Age, Women',
+    price: 23.92,
+    count: 4,
+    cover: '/assets/pictures/9780735219090.jpg'
+  },
+  {
+    id: '9bc60485-3a8d-48c5-8613-a5e93af84d8c',
+    title: 'Criss Cross',
+    description: 'Thrillers - Crime, Mystery & Detective - Police Procedural',
+    price: 26.68,
+    count: 6,
+    cover: '/assets/pictures/9780316526883.jpg'
+  },
+  {
+    id: '2540f194-a392-475e-97ce-573795c759ef',
+    title: 'The Institute',
+    description: 'Thrillers - Suspense, Thrillers - Supernatural',
+    price: 27.60,
+    count: 7,
+    cover: '/assets/pictures/9781982110567.jpg'
+  },
+  {
+    id: '6d9abe86-d75f-4f0d-8a93-a39d57e0d7fb',
+    title: 'A Minute to Midnight',
+    description: 'Thrillers - Suspense, Action & Adventure',
+    price: 29.90,
+    count: 12,
+    cover: '/assets/pictures/9781538761601.jpg'
+  },
+  {
+    id: '0cd8a10b-56e3-4555-8bce-d8c84a6164ca',
+    title: 'The Overstory',
+    description: 'Literary',
+    price: 17.43,
+    count: 7,
+    cover: '/assets/pictures/9780393356687.jpg'
+  },
+  {
+    id: 'ef480179-f778-4983-b679-a732499a41d6',
+    title: 'Before We Were Yours',
+    description: 'Historical - General, General',
+    price: 15.64,
+    count: 8,
+    cover: '/assets/pictures/9780425284704.jpg'
+  },
+  {
+    id: '188e3a5e-6bcd-42a5-9533-0f78d17dfbaf',
+    title: 'Little Fires Everywhere',
+    description: 'Literary, Asian American, Family Life - General',
+    price: 15.64,
+    count: 2,
+    cover: '/assets/pictures/9780735224315.jpg'
+  },
+  {
+    id: '2e4393f2-27b8-474d-a1bd-e7dde4e74cca',
+    title: 'A Gentleman in Moscow',
+    description: 'Historical - General, Literary, Political',
+    price: 17.50,
+    count: 3,
+    cover: '/assets/pictures/9780143110439.jpg'
+  }
+]
