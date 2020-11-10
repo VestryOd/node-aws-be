@@ -22,7 +22,7 @@ const addProduct: APIGatewayProxyHandler = async (event, _context) => {
       response.statusCode = 400;
       response.body = JSON.stringify({ error: "Wrong params"});
     } else {
-      await client.connect();      
+      client.connect();      
       const { title, description, price, count } = data;
       await client.query('BEGIN');
       const {

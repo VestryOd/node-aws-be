@@ -23,10 +23,10 @@ const getProductsById: APIGatewayProxyHandler = async (event, _context) => {
       response.statusCode = 400;
       response.body = JSON.stringify({ error: 'Wrong or invalid id' });
     } else {
-      await client.connect();
+      client.connect();
 
       const { rows: [foundItem] } = await client.query(
-        'select p.*, s.count from products p join stocks s on s.product_id = p.id where p.id = $1',
+        'select p.*, s.count from products p join stocks s on s.products_id = p.id where p.id = $1',
         [productId]
       );
       console.log('---Found product---', foundItem);

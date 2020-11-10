@@ -26,7 +26,6 @@ const serverlessConfiguration: Serverless = {
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
-      PG_PORT: 5432,
       PGHOST: '${env:PG_HOST}',
       PGDATABASE: '${env:PG_DB}',
       PGUSER: '${env:PG_USER}',
@@ -58,7 +57,19 @@ const serverlessConfiguration: Serverless = {
           }
         }
       ]
-    }
+    },
+    addProduct: {
+      handler: 'handler.addProduct',
+      events: [
+        {
+          http: {
+            method: 'post',
+            path: 'products',
+            cors: true,
+          },
+        },
+      ],
+    },
   }
 }
 

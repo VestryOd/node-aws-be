@@ -18,11 +18,12 @@ const getProductsList: APIGatewayProxyHandler = async (event, _context) => {
   console.log('---Event log---', { event });
 
   try {
-    await client.connect();
+    client.connect();
 
     const { rows: productsData } = await client.query(
       'select p.*, s.count from products p join stocks s on p.id = s.products_id'
     );
+    console.log('---productsData---', productsData);
     response.body = JSON.stringify(productsData);
     response.statusCode = 200;
   } catch (error) {
