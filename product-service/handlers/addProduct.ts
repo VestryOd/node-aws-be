@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import { Client } from 'pg';
-import { dbOptions, checkPostParams } from '../common/helpers.js';
+import { dbOptions } from '../common/helpers.js';
 
 const addProduct: APIGatewayProxyHandler = async (event, _context) => {
   const client = new Client(dbOptions);
@@ -14,16 +14,14 @@ const addProduct: APIGatewayProxyHandler = async (event, _context) => {
       'Access-Control-Allow-Credentials': true,
     }
   };
-  console.log('---Event log---', { event });
 
   try {
-    const data = JSON.parse(event.body);
-    if (checkPostParams(data)) {
+    const { title, description, price, count } = JSON.parse(event.body);
+    if (!title || !description || Number.isNaN(price) || Number.isNaN(count)) {
       response.statusCode = 400;
       response.body = JSON.stringify({ error: "Wrong params"});
     } else {
-      client.connect();      
-      const { title, description, price, count } = data;
+      client.connect();
       await client.query('BEGIN');
       const {
         rows: [newProduct],
@@ -32,8 +30,10 @@ const addProduct: APIGatewayProxyHandler = async (event, _context) => {
         [title, description, price]
       );
 
+      console.log('--newProduct--', newProduct);
+
       await client.query(
-        'insert into stocks(product_id, count) values ($1, $2)',
+        'insert into stocks(products_id, count) values ($1, $2)',
         [newProduct['id'], count]
       );
 

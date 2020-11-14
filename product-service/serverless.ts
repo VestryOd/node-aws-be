@@ -26,10 +26,10 @@ const serverlessConfiguration: Serverless = {
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
-      PGHOST: '${env:PG_HOST}',
-      PGDATABASE: '${env:PG_DB}',
-      PGUSER: '${env:PG_USER}',
-      PGPASSWORD: '${env:PG_PWD}',
+      PGHOST: process.env.PG_HOST,
+      PGDATABASE: process.env.PG_DB,
+      PGUSER: process.env.USER,
+      PGPASSWORD: process.env.PG_PWD,
     },
   },
   functions: {
