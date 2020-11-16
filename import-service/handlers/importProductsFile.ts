@@ -16,13 +16,13 @@ const importProductsFile: APIGatewayProxyHandler = async (event, _context) => {
 
   try {
     const { name } = event.queryStringParameters;
-    const s3response = await s3.getSignedUrlPromise('putObject', {
+    const signedURL = await s3.getSignedUrlPromise('putObject', {
       Bucket: 'vestry-import-bucket',
       Key: `uploaded/${name}`,
       Expires: 600,
       ContentType: 'text/csv',
     });
-    response.body = JSON.stringify({ url: s3response });
+    response.body = JSON.stringify({ url: signedURL });
     response.statusCode = 200;
   } catch (error) {
     response.body = JSON.stringify({ error });
