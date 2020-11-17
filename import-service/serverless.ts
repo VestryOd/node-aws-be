@@ -54,7 +54,20 @@ const serverlessConfiguration: Serverless = {
           }
         }
       ]
-    }
+    },
+    importFileParser: {
+      handler: 'handler.importFileParser',
+      events: [
+        {
+          s3: {
+            event: 's3:ObjectCreated:*',
+            bucket: 'vestry-import-bucket',
+            rules: [{ prefix: 'uploaded/', suffix: '.csv' }],
+            existing: true,
+          },
+        },
+      ],
+    },
   }
 }
 
