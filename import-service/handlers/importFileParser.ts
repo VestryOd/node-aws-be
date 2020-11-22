@@ -2,8 +2,6 @@ import { S3Event } from 'aws-lambda';
 import { S3, SQS } from 'aws-sdk';
 import parse from 'csv-parser';
 
-// const BUCKET = 'vestry-import-bucket';
-
 const importFileParser = async (
   event: S3Event
 ): Promise<{ statusCode: number }> => {

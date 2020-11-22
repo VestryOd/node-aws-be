@@ -120,7 +120,7 @@ const serverlessConfiguration: Serverless = {
         Type: 'AWS::SNS::Subscription',
         Properties: {
           Protocol: 'email',
-          Endpoint: 'kaedan.17@puttingpv.com',
+          Endpoint: 'vabej48343@bcpfm.com',
           TopicArn: {
             Ref: 'createProductTopic',
           },
