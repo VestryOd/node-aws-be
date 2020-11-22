@@ -115,7 +115,20 @@ const serverlessConfiguration: Serverless = {
             Ref: 'createProductTopic',
           },
         },
-      }
+      },
+      zeroCountCreateProductSubscription: {
+        Type: 'AWS::SNS::Subscription',
+        Properties: {
+          Protocol: 'email',
+          Endpoint: 'kaedan.17@puttingpv.com',
+          TopicArn: {
+            Ref: 'createProductTopic',
+          },
+          FilterPolicy: {
+            zeroCountAtStore: [{ numeric: ['<=', 0] }],
+          },
+        },
+      },
     },
     Outputs: {
       productsItemsQueueArn: {
