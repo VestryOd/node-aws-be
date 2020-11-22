@@ -11,7 +11,9 @@ const serverlessConfiguration: Serverless = {
   custom: {
     webpack: {
       webpackConfig: './webpack.config.js',
-      includeModules: true
+      includeModules: {
+        forceExclude: 'aws-sdk',
+      },
     }
   },
   // Add the serverless-webpack plugin
@@ -30,7 +32,15 @@ const serverlessConfiguration: Serverless = {
       PGDATABASE: process.env.PG_DB,
       PGUSER: process.env.USER,
       PGPASSWORD: process.env.PG_PWD,
+      SNS_ARN: { Ref: 'createProductTopic' },
     },
+    iamRoleStatements: [
+      {
+        Effect: 'Allow',
+        Action: ['sns:*'],
+        Resource: { Ref: 'createProductTopic' },
+      },
+    ],
   },
   functions: {
     getProductsList: {
@@ -70,6 +80,51 @@ const serverlessConfiguration: Serverless = {
         },
       ],
     },
+    catalogBatchProcess: {
+      handler: 'handler.catalogBatchProcess',
+      events: [
+        {
+          sqs: {
+            arn: { 'Fn::GetAtt': ['productsItemsQueue', 'Arn'] },
+            batchSize: 5,
+          },
+        },
+      ],
+    },
+  },
+  resources: {
+    Resources: {
+      productsItemsQueue: {
+        Type: 'AWS::SQS::Queue',
+        Properties: {
+          QueueName: 'vestry-import-products-sqs-queue',
+        },
+      },
+      createProductTopic: {
+        Type: 'AWS::SNS::Topic',
+        Properties: {
+          TopicName: 'vestry-product-import-sns-topic',
+        },
+      },
+      createProductSubscription: {
+        Type: 'AWS::SNS::Subscription',
+        Properties: {
+          Protocol: 'email',
+          Endpoint: 'aws.test.acc01@gmail.com',
+          TopicArn: {
+            Ref: 'createProductTopic',
+          },
+        },
+      }
+    },
+    Outputs: {
+      productsItemsQueueArn: {
+        Value: { 'Fn::GetAtt': ['productsItemsQueue', 'Arn'] },
+      },
+      productsItemsQueueUrl: {
+        Value: { Ref: 'productsItemsQueue' },
+      },
+    }
   }
 }
 

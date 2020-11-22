@@ -104,3 +104,9 @@ dist
 .tern-port
 
 .env
+
+.vscode
+
+.serverless
+
+.idea
