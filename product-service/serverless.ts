@@ -15,7 +15,7 @@ const serverlessConfiguration: Serverless = {
     }
   },
   // Add the serverless-webpack plugin
-  plugins: ['serverless-webpack'],
+  plugins: ['serverless-webpack', 'serverless-dotenv-plugin'],
   provider: {
     name: 'aws',
     runtime: 'nodejs12.x',
@@ -26,10 +26,10 @@ const serverlessConfiguration: Serverless = {
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
-      PGHOST: process.env.PG_HOST,
-      PGDATABASE: process.env.PG_DB,
-      PGUSER: process.env.USER,
-      PGPASSWORD: process.env.PG_PWD,
+      PGHOST: '${env:PG_HOST}',
+      PGDATABASE: '${env:PG_DB}',
+      PGUSER: '${env:PG_USER}',
+      PGPASSWORD: '${env:PG_PWD}',
     },
   },
   functions: {

@@ -8,7 +8,9 @@
   },
   "dependencies": {
     "axios": "^0.21.0",
+    "dotenv": "^8.2.0",
     "pg": "^8.4.2",
+    "serverless-dotenv-plugin": "^3.1.0",
     "source-map-support": "^0.5.10"
   },
   "devDependencies": {
