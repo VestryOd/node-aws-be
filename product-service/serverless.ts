@@ -26,11 +26,15 @@ const serverlessConfiguration: Serverless = {
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
-      PGHOST: '${env:PG_HOST}',
-      PGDATABASE: '${env:PG_DB}',
-      PGUSER: '${env:PG_USER}',
-      PGPASSWORD: '${env:PG_PWD}',
+      SNS_ARN: { Ref: 'createProductTopic' },
     },
+    iamRoleStatements: [
+      {
+        Effect: 'Allow',
+        Action: ['sns:*'],
+        Resource: { Ref: 'createProductTopic' },
+      },
+    ],
   },
   functions: {
     getProductsList: {
@@ -90,12 +94,43 @@ const serverlessConfiguration: Serverless = {
           QueueName: 'vestry-import-products-sqs-queue',
         },
       },
+      createProductTopic: {
+        Type: 'AWS::SNS::Topic',
+        Properties: {
+          TopicName: 'vestry-import-products-sns-topic',
+        },
+      },
+      createProductSubscription: {
+        Type: 'AWS::SNS::Subscription',
+        Properties: {
+          Protocol: 'email',
+          Endpoint: 'aws.test.acc01@gmail.com',
+          TopicArn: {
+            Ref: 'createProductTopic',
+          },
+        },
+      },
+      createProductBigBatchSubscription: {
+        Type: 'AWS::SNS::Subscription',
+        Properties: {
+          Protocol: 'email',
+          Endpoint: 'vabej48343@bcpfm.com',
+          TopicArn: {
+            Ref: 'createProductTopic',
+          },
+          FilterPolicy: {
+            batchAtStore: [{ numeric: ['>', 50] }],
+          },
+        },
+      },
     },
     Outputs: {
       catalogItemsQueueArn: {
+        Description: "SQS Topic URL to publish exported products",
         Value: { 'Fn::GetAtt': ['catalogItemsQueue', 'Arn'] },
       },
       catalogItemsQueueUrl: {
+        Description: "SQS Topic ARN to publish exported products",
         Value: { Ref: 'catalogItemsQueue' },
       },
     },

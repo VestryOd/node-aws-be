@@ -2,8 +2,6 @@ import { S3Event } from 'aws-lambda';
 import { S3, SQS } from 'aws-sdk';
 import parse from 'csv-parser';
 
-// const BUCKET = 'vestry-import-bucket';
-
 const importFileParser = async (
   event: S3Event
 ): Promise<{ statusCode: number }> => {
@@ -11,7 +9,7 @@ const importFileParser = async (
     const s3 = new S3({ region: 'eu-west-1' });
     const sqs = new SQS({ region: 'eu-west-1' });
     const parser = parse({
-      separator: ';',
+      separator: ',',
     });
 
     for (const record of event.Records) {
@@ -27,14 +25,17 @@ const importFileParser = async (
               .on('readable', () => {
                 try {
                   let record = parser.read();
+                  console.log('--parsed--', record)
                   while (record) {
-                    console.log('--record--', record, process.env.IMPORT_SQS);
                     sqs.sendMessage(
                       {
                         QueueUrl: process.env.IMPORT_SQS,
                         MessageBody: JSON.stringify(record)
+                      },
+                      (err, sendMessageResult) => {
+                        console.log({ err, sendMessageResult });
                       }
-                    )
+                    );
                     record = parser.read();
                   }
                 } catch (error) {
