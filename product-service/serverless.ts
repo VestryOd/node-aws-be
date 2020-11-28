@@ -70,6 +70,35 @@ const serverlessConfiguration: Serverless = {
         },
       ],
     },
+    catalogBatchProcess: {
+      handler: 'handler.catalogBatchProcess',
+      events: [
+        {
+          sqs: {
+            arn: { 'Fn::GetAtt': ['catalogItemsQueue', 'Arn'] },
+            batchSize: 5,
+          },
+        },
+      ],
+    },
+  },
+  resources: {
+    Resources: {
+      catalogItemsQueue: {
+        Type: 'AWS::SQS::Queue',
+        Properties: {
+          QueueName: 'vestry-import-products-sqs-queue',
+        },
+      },
+    },
+    Outputs: {
+      catalogItemsQueueArn: {
+        Value: { 'Fn::GetAtt': ['catalogItemsQueue', 'Arn'] },
+      },
+      catalogItemsQueueUrl: {
+        Value: { Ref: 'catalogItemsQueue' },
+      },
+    },
   }
 }
 
