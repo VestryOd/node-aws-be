@@ -26,12 +26,21 @@ const serverlessConfiguration: Serverless = {
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      IMPORT_SQS:
+        '${cf:product-service-${self:provider.stage}.catalogItemsQueueUrl}',
+      IMPORT_BUCKET: 'vestry-import-bucket',
     },
     iamRoleStatements: [
       {
         Effect: 'Allow',
         Action: ['s3:*'],
         Resource: 'arn:aws:s3:::vestry-import-bucket/*',
+      },
+      {
+        Effect: 'Allow',
+        Action: 'sqs:*',
+        Resource:
+          '${cf:product-service-${self:provider.stage}.catalogItemsQueueArn}',
       },
     ],
   },
